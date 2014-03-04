@@ -10,6 +10,7 @@ public class Generator {
 
 	public Generator(int size) {
 		wsm = new WumpusWorld(size);
+		wsm.printStringRepresentation();
 	}
 
 	public void print() {

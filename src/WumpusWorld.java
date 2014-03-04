@@ -171,4 +171,80 @@ public class WumpusWorld {
 	public String getGoldLocation() {
 		return "l" + goldLocation;
 	}
+
+	/* For testing */
+	public void printStringRepresentation() {
+		String[][] world = getStringRepresentation();
+
+		for (int i = world.length - 1; i >= 0; i--) {
+			for (int j = 0; j < world.length; j++) {
+				System.out.print(world[i][j]);
+			}
+			System.out.println();
+		}
+	}
+
+	/*
+	 * For testing.
+	 */
+	public String[][] getStringRepresentation() {
+		String[][] world = new String[size][size];
+
+		for (int i = 1; i <= size; i++) {
+			for (int j = 1; j <= size; j++) {
+				world[i - 1][j - 1] = "";
+			}
+		}
+
+		// TreeSet<String> pits, smellLocations, breezeLocations;
+		// private String wumpusLocation, goldLocation;
+		for (String p : pits) {
+			int x = Character.getNumericValue(p.charAt(0));
+			int y = Character.getNumericValue(p.charAt(1));
+			world[x - 1][y - 1] += "P";
+		}
+
+		for (String s : smellLocations) {
+			int x = Character.getNumericValue(s.charAt(0));
+			int y = Character.getNumericValue(s.charAt(1));
+			world[x - 1][y - 1] += "S";
+		}
+
+		for (String b : breezeLocations) {
+			int x = Character.getNumericValue(b.charAt(0));
+			int y = Character.getNumericValue(b.charAt(1));
+			world[x - 1][y - 1] += "B";
+		}
+
+		int x = Character.getNumericValue(wumpusLocation.charAt(0));
+		int y = Character.getNumericValue(wumpusLocation.charAt(1));
+		world[x - 1][y - 1] += "W";
+
+		x = Character.getNumericValue(goldLocation.charAt(0));
+		y = Character.getNumericValue(goldLocation.charAt(1));
+		world[x - 1][y - 1] += "G";
+
+		world[0][0] = "A";
+
+		int cellSize = 6;
+		int diff;
+		for (int i = 1; i <= size; i++) {
+			for (int j = 1; j <= size; j++) {
+				String s = world[i - 1][j - 1];
+				if (s.equals("")) {
+					diff = cellSize;
+					s = "";
+				} else {
+					diff = cellSize - s.length();
+				}
+				for (int k = 0; k < diff - 1; k++) {
+					s += "_";
+				}
+				s += "|";
+				world[i - 1][j - 1] = s;
+			}
+		}
+
+		return world;
+	}
 }
