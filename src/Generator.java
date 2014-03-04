@@ -25,9 +25,9 @@ public class Generator {
 	}
 
 	private void createProblemString(StringBuilder sb) {
-
 		appendHeader(sb);
 		appendObjects(sb, wsm);
+		appendSensors(sb, wsm);
 		appendDangers(sb, wsm);
 		appendInit(sb, wsm);
 		appendGoal(sb);
@@ -41,7 +41,6 @@ public class Generator {
 	}
 
 	private static void appendObjects(StringBuilder sb, WumpusWorld wsm) {
-
 		sb.append("(:objects a0 - arrow\n");
 		sb.append(whiteSpace + "g0 - gold\n");
 		sb.append(whiteSpace + wsm.getLocationsString());
@@ -51,7 +50,17 @@ public class Generator {
 		sb.append(")\n");
 	}
 
-	private void appendDangers(StringBuilder sb, WumpusWorld wsm2) {
+	private static void appendSensors(StringBuilder sb, WumpusWorld wsm2) {
+		sb.append("(:sensors ");
+		sb.append(wsm2.getSmellsListString());
+		sb.append(" - smell\n");
+		sb.append(whiteSpace + wsm2.getBreezeListString());
+		sb.append(" - breeze\n");
+		sb.append(")\n");
+		// smell breeze - sensor
+	}
+
+	private static void appendDangers(StringBuilder sb, WumpusWorld wsm2) {
 		sb.append("(:dangers w0 - wumpus\n");
 		sb.append(whiteSpace + wsm2.getPitsListString());
 		sb.append(" - pit\n");
@@ -61,8 +70,10 @@ public class Generator {
 	private static void appendInit(StringBuilder sb, WumpusWorld wsm) {
 		sb.append("(:init\n");
 		sb.append("(at p0 l11)\n");
-		sb.append("(at w0 " + wsm.getWumpusLocation() + ")\n");
 		sb.append("(at g0 " + wsm.getGoldLocation() + ")\n");
+		sb.append(wsm.getSmellAndLocationString());
+		sb.append(wsm.getBreezeAndLocationString());
+		sb.append("(at w0 " + wsm.getWumpusLocation() + ")\n");
 		sb.append(wsm.getPitAndLocationString());
 		sb.append("(have a0)\n");
 		sb.append(wsm.getAdjacencyString());
@@ -76,5 +87,4 @@ public class Generator {
 		sb.append("(have g0)\n");
 		sb.append(")\n");
 	}
-
 }

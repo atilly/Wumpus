@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 public class WumpusWorld {
 	HashMap<String, TreeSet<String>> allAdjacent;
-	TreeSet<String> pits, stenchLocations, breezeLocations;
+	TreeSet<String> pits, smellLocations, breezeLocations;
 	private String wumpusLocation, goldLocation;
 	int size;
 
@@ -12,36 +12,22 @@ public class WumpusWorld {
 		size = s;
 		allAdjacent = new HashMap<String, TreeSet<String>>();
 		pits = new TreeSet<String>();
-		stenchLocations = new TreeSet<String>();
+		smellLocations = new TreeSet<String>();
 		breezeLocations = new TreeSet<String>();
 		initWorld();
 		wumpusLocation = getRandomLocation();
 		goldLocation = getRandomLocation();
-
 		initWarnings();
 	}
 
 	private void initWarnings() {
-		TreeSet<String> adj = allAdjacent.get(wumpusLocation);
-
-		if (adj != null) {
-			for (String adjLoc : adj) {
-				stenchLocations.add(adjLoc);
-			}
-		} else {
-			/* Märkligt att pit inte har några rutor jämte sig väl? */
-			System.out.println(wumpusLocation + " inga adj?? ");
+		for (String adjLoc : allAdjacent.get(wumpusLocation)) {
+			smellLocations.add(adjLoc);
 		}
 
 		for (String pit : pits) {
-			TreeSet<String> adj2 = allAdjacent.get(pit);
-			if (adj2 != null) {
-				for (String adjLoc : adj2) {
-					breezeLocations.add(adjLoc);
-				}
-			} else {
-				/* Märkligt att pit inte har några rutor jämte sig väl? */
-				System.out.println(pit + " inga adj?? ");
+			for (String adjLoc : allAdjacent.get(pit)) {
+				breezeLocations.add(adjLoc);
 			}
 		}
 	}
@@ -55,10 +41,42 @@ public class WumpusWorld {
 		return result;
 	}
 
+	public String getSmellsListString() {
+		String result = "";
+		for (String s : smellLocations) {
+			result += "s" + s + " ";
+		}
+		return result;
+	}
+
+	public String getBreezeListString() {
+		String result = "";
+		for (String s : breezeLocations) {
+			result += "b" + s + " ";
+		}
+		return result;
+	}
+
 	public String getPitAndLocationString() {
 		String result = "";
 		for (String p : pits) {
 			result += "(at pit" + p + " l" + p + ")\n";
+		}
+		return result;
+	}
+
+	public String getSmellAndLocationString() {
+		String result = "";
+		for (String p : smellLocations) {
+			result += "(at s" + p + " l" + p + ")\n";
+		}
+		return result;
+	}
+
+	public String getBreezeAndLocationString() {
+		String result = "";
+		for (String p : breezeLocations) {
+			result += "(at b" + p + " l" + p + ")\n";
 		}
 		return result;
 	}
@@ -96,8 +114,8 @@ public class WumpusWorld {
 					pits.add("" + x + y);
 				}
 
-				for (int i = x - 1; i <= x+1; i++) {
-					for (int j = y - 1; j <= y+1; j++) {
+				for (int i = x - 1; i <= x + 1; i++) {
+					for (int j = y - 1; j <= y + 1; j++) {
 
 						if (isAdjacent(x, y, i, j)) {
 							adjSquare = "" + i + j;
@@ -106,13 +124,10 @@ public class WumpusWorld {
 								addAdjacent(adjSquare, square);
 							}
 						}
-
 					}
 				}
-
 			}
 		}
-
 		pits.remove("11");
 	}
 
@@ -156,5 +171,4 @@ public class WumpusWorld {
 	public String getGoldLocation() {
 		return "l" + goldLocation;
 	}
-
 }
