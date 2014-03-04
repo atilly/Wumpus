@@ -205,6 +205,7 @@ public class WumpusWorld {
 				world[i - 1][j - 1] = "";
 			}
 		}
+		world[0][0] = "A";
 
 		// TreeSet<String> pits, smellLocations, breezeLocations;
 		// private String wumpusLocation, goldLocation;
@@ -234,7 +235,7 @@ public class WumpusWorld {
 		y = Character.getNumericValue(goldLocation.charAt(1));
 		world[x - 1][y - 1] += "G";
 
-		world[0][0] = "A";
+
 
 		int cellSize = 6;
 		int diff;
