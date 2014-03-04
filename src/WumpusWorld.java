@@ -15,8 +15,15 @@ public class WumpusWorld {
 		smellLocations = new TreeSet<String>();
 		breezeLocations = new TreeSet<String>();
 		initWorld();
-		wumpusLocation = getRandomLocation();
-		goldLocation = getRandomLocation();
+
+		do {
+			wumpusLocation = getRandomLocation();
+		} while (pits.contains(wumpusLocation));
+
+		do {
+			goldLocation = getRandomLocation();
+		} while (pits.contains(goldLocation)
+				|| goldLocation.equals(wumpusLocation));
 		initWarnings();
 	}
 
@@ -157,6 +164,9 @@ public class WumpusWorld {
 	private String getRandomLocation() {
 		int x = getRandomIndex();
 		int y = getRandomIndex();
+		if (x == 1 && y == 1) {
+			return getRandomLocation();
+		}
 		return "" + x + y;
 	}
 
