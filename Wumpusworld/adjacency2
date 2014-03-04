@@ -1,0 +1,35 @@
+(define (problem wumpusworld1)
+(:domain wumpusworld)
+(:objects a0 - arrow
+		  g0 - gold
+		  l11 l12 l13 l21 l22 l23 l31 l32  - location
+		  p0 - player
+)
+(:init
+(at p0 l00)
+(at g0 l33)
+(have a0)
+(adjacent l11 l12)
+(adjacent l11 l21)
+(adjacent l12 l11)
+(adjacent l12 l13)
+(adjacent l12 l22)
+(adjacent l13 l12)
+(adjacent l21 l11)
+(adjacent l21 l22)
+(adjacent l21 l31)
+(adjacent l22 l12)
+(adjacent l22 l21)
+(adjacent l22 l23)
+(adjacent l22 l32)
+(adjacent l23 l22)
+(adjacent l31 l21)
+(adjacent l32 l22)
+)
+(:goal
+(and
+(at p0 l00)
+(have g0)
+)
+)
+)
