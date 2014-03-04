@@ -6,6 +6,7 @@ public class Generator {
 	private final static String path = "Wumpusworld/";
 	private final static String file = "problem2";
 	WumpusWorld wsm;
+	static String whiteSpace = "		  ";
 
 	public Generator(int size) {
 		wsm = new WumpusWorld(size);
@@ -27,6 +28,7 @@ public class Generator {
 
 		appendHeader(sb);
 		appendObjects(sb, wsm);
+		appendDangers(sb, wsm);
 		appendInit(sb, wsm);
 		appendGoal(sb);
 		sb.append(")\n");
@@ -39,13 +41,20 @@ public class Generator {
 	}
 
 	private static void appendObjects(StringBuilder sb, WumpusWorld wsm) {
-		String whiteSpace = "		  ";
+
 		sb.append("(:objects a0 - arrow\n");
 		sb.append(whiteSpace + "g0 - gold\n");
 		sb.append(whiteSpace + wsm.getLocationsString());
 		sb.append(" - location\n");
 		sb.append(whiteSpace + "p0 - player\n");
-		sb.append(whiteSpace + "w0 - wumpus\n");
+
+		sb.append(")\n");
+	}
+
+	private void appendDangers(StringBuilder sb, WumpusWorld wsm2) {
+		sb.append("(:dangers w0 - wumpus\n");
+		sb.append(whiteSpace + wsm2.getPitsListString());
+		sb.append(" - pit\n");
 		sb.append(")\n");
 	}
 
@@ -54,6 +63,7 @@ public class Generator {
 		sb.append("(at p0 l11)\n");
 		sb.append("(at w0 " + wsm.getWumpusLocation() + ")\n");
 		sb.append("(at g0 " + wsm.getGoldLocation() + ")\n");
+		sb.append(wsm.getPitAndLocationString());
 		sb.append("(have a0)\n");
 		sb.append(wsm.getAdjacencyString());
 		sb.append(")\n");

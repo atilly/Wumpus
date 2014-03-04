@@ -5,9 +5,7 @@ import java.util.TreeSet;
 public class WumpusWorld {
 	HashMap<String, TreeSet<String>> allAdjacent;
 	TreeSet<String> pits, stenchLocations, breezeLocations;
-
 	private String wumpusLocation, goldLocation;
-
 	int size;
 
 	public WumpusWorld(int s) {
@@ -24,15 +22,45 @@ public class WumpusWorld {
 	}
 
 	private void initWarnings() {
-		for (String adjLoc : allAdjacent.get(wumpusLocation)) {
-			stenchLocations.add(adjLoc);
+		TreeSet<String> adj = allAdjacent.get(wumpusLocation);
+
+		if (adj != null) {
+			for (String adjLoc : adj) {
+				stenchLocations.add(adjLoc);
+			}
+		} else {
+			/* Märkligt att pit inte har några rutor jämte sig väl? */
+			System.out.println(wumpusLocation + " inga adj?? ");
 		}
 
 		for (String pit : pits) {
-			for (String adjLoc : allAdjacent.get(pit)) {
-				breezeLocations.add(adjLoc);
+			TreeSet<String> adj2 = allAdjacent.get(pit);
+			if (adj2 != null) {
+				for (String adjLoc : adj2) {
+					breezeLocations.add(adjLoc);
+				}
+			} else {
+				/* Märkligt att pit inte har några rutor jämte sig väl? */
+				System.out.println(pit + " inga adj?? ");
 			}
 		}
+	}
+
+	/* For listing of all the pit locations */
+	public String getPitsListString() {
+		String result = "";
+		for (String s : pits) {
+			result += "pit" + s + " ";
+		}
+		return result;
+	}
+
+	public String getPitAndLocationString() {
+		String result = "";
+		for (String p : pits) {
+			result += "(at pit" + p + " l" + p + ")\n";
+		}
+		return result;
 	}
 
 	public String getLocationsString() {
@@ -60,19 +88,19 @@ public class WumpusWorld {
 	private void initWorld() {
 		String square, adjSquare;
 
-		for (int x = 0; x <= size; x++) {
-			for (int y = 0; y <= size; y++) {
-				square = x + "" + y;
+		for (int x = 1; x <= size; x++) {
+			for (int y = 1; y <= size; y++) {
+				square = "" + x + y;
 
 				if (Math.random() < 0.2) {
-					pits.add(square);
+					pits.add("" + x + y);
 				}
 
-				for (int i = 0; i <= 3; i++) {
-					for (int j = 0; j <= 3; j++) {
+				for (int i = x - 1; i <= x+1; i++) {
+					for (int j = y - 1; j <= y+1; j++) {
 
 						if (isAdjacent(x, y, i, j)) {
-							adjSquare = i + "" + j;
+							adjSquare = "" + i + j;
 							if (!square.equals(adjSquare)) {
 								addAdjacent(square, adjSquare);
 								addAdjacent(adjSquare, square);
@@ -85,17 +113,7 @@ public class WumpusWorld {
 			}
 		}
 
-		pits.remove("l11");
-	}
-
-	private String getRandomLocation() {
-		int x = getRandomIndex();
-		int y = getRandomIndex();
-		return "l" + x + y;
-	}
-
-	private int getRandomIndex() {
-		return 1 + (int) (Math.random() * size);
+		pits.remove("11");
 	}
 
 	private void addAdjacent(String square, String adjSquare) {
@@ -121,11 +139,22 @@ public class WumpusWorld {
 		return i > 0 && j > 0 && i <= size && j <= size;
 	}
 
+	private String getRandomLocation() {
+		int x = getRandomIndex();
+		int y = getRandomIndex();
+		return "" + x + y;
+	}
+
+	private int getRandomIndex() {
+		return 1 + (int) (Math.random() * size);
+	}
+
 	public String getWumpusLocation() {
-		return wumpusLocation;
+		return "l" + wumpusLocation;
 	}
 
 	public String getGoldLocation() {
-		return goldLocation;
+		return "l" + goldLocation;
 	}
+
 }
