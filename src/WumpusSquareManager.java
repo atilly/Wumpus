@@ -37,12 +37,12 @@ public class WumpusSquareManager {
 	private void initAdjacentSquares() {
 		String square, adjSquare;
 
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++) {
+		for (int x = 0; x <= size; x++) {
+			for (int y = 0; y <= size; y++) {
 				square = x + "" + y;
 
-				for (int i = 0; i < 3; i++) {
-					for (int j = 0; j < 3; j++) {
+				for (int i = 0; i <= 3; i++) {
+					for (int j = 0; j <= 3; j++) {
 
 						if (isAdjacent(x, y, i, j)) {
 							adjSquare = i + "" + j;

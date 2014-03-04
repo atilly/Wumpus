@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Generator {
 	private final static String path = "Wumpusworld/";
-	private final static String file = "adjacency2";
+	private final static String file = "problem2";
 	int[][] world;
 	private int size;
 
@@ -46,13 +46,16 @@ public class Generator {
 		sb.append(whiteSpace + "g0 - gold\n");
 		sb.append(whiteSpace + wsm.getLocationsString());
 		sb.append(" - location\n");
-		sb.append(whiteSpace + "p0 - player\n)\n");
+		sb.append(whiteSpace + "p0 - player\n");
+		sb.append(whiteSpace + "w0 - wumpus\n");
+		sb.append(")\n");
 	}
 
-	private static void appendInit(StringBuilder sb, WumpusSquareManager wsm) {
+	private void appendInit(StringBuilder sb, WumpusSquareManager wsm) {
 		sb.append("(:init\n");
-		sb.append("(at p0 l00)\n");
-		sb.append("(at g0 l33)\n");
+		sb.append("(at p0 l11)\n");
+		sb.append("(at w0 " + getRandomLocation() + ")\n");
+		sb.append("(at g0 " + getRandomLocation() + ")\n");
 		sb.append("(have a0)\n");
 		sb.append(wsm.getAdjacencyString());
 		sb.append(")\n");
@@ -61,8 +64,18 @@ public class Generator {
 	private static void appendGoal(StringBuilder sb) {
 		sb.append("(:goal\n");
 		sb.append("(and\n");
-		sb.append("(at p0 l00)\n");
+		sb.append("(at p0 l11)\n");
 		sb.append("(have g0)\n");
 		sb.append(")\n");
+	}
+
+	private String getRandomLocation() {
+		int x = getRandomIndex();
+		int y = getRandomIndex();
+		return "l" + x + y;
+	}
+
+	private int getRandomIndex() {
+		return 1 + (int) (Math.random() * size);
 	}
 }

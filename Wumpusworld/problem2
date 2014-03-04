@@ -4,10 +4,12 @@
 		  g0 - gold
 		  l11 l12 l13 l14 l21 l22 l23 l24 l31 l32 l33 l34 l41 l42 l43  - location
 		  p0 - player
+		  w0 - wumpus
 )
 (:init
 (at p0 l11)
-(at g0 l11)
+(at w0 l43)
+(at g0 l41)
 (have a0)
 (adjacent l11 l12)
 (adjacent l11 l21)
