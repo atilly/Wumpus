@@ -19,11 +19,17 @@ public class WumpusWorld {
 		do {
 			wumpusRoom = getRandomRoom();
 		} while (pits.contains(wumpusRoom));
-
+		initCanShootRooms();
+		
 		do {
 			goldRoom = getRandomRoom();
 		} while (pits.contains(goldRoom) || goldRoom.equals(wumpusRoom));
 		initWarnings();
+	}
+
+	private void initCanShootRooms() {
+		// TODO sätt canShoot r1 wr på alla i linje med wr
+		
 	}
 
 	private void initWarnings() {

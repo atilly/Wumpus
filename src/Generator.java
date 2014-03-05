@@ -66,6 +66,7 @@ public class Generator {
 	private static void appendInit(StringBuilder sb, WumpusWorld wsm) {
 		sb.append("(:init\n");
 		sb.append("(at p0 r11)\n");
+		sb.append("(isAlive)\n");
 		sb.append("(goldAt " + wsm.getGoldRoom() + ")\n");
 		sb.append(wsm.getStenchString());
 		sb.append(wsm.getBreezeString());
