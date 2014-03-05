@@ -5,26 +5,38 @@
 		  l11 l12 l13 l14 l21 l22 l23 l24 l31 l32 l33 l34 l41 l42 l43 l44  - location
 		  p0 - player
 )
-(:sensors s13 s22 s24 s33  - smell
-		  b31 b33 b42 b44  - breeze
+(:sensors s22 s31 s33 s42  - smell
+		  b11 b13 b22 b24 b31 b32 b33 b34 b41 b42 b43 b44  - breeze
 )
 (:dangers w0 - wumpus
-		  pit41 pit43  - pit
+		  pit21 pit23 pit41 pit42 pit43 pit44  - pit
 )
 (:init
 (at p0 l11)
-(at g0 l21)
-(at s13 l13)
+(at g0 l33)
 (at s22 l22)
-(at s24 l24)
+(at s31 l31)
 (at s33 l33)
+(at s42 l42)
+(at b11 l11)
+(at b13 l13)
+(at b22 l22)
+(at b24 l24)
 (at b31 l31)
+(at b32 l32)
 (at b33 l33)
+(at b34 l34)
+(at b41 l41)
 (at b42 l42)
+(at b43 l43)
 (at b44 l44)
-(at w0 l23)
+(at w0 l32)
+(at pit21 l21)
+(at pit23 l23)
 (at pit41 l41)
+(at pit42 l42)
 (at pit43 l43)
+(at pit44 l44)
 (have a0)
 (adjacent l11 l12)
 (adjacent l11 l21)
