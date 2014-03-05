@@ -64,35 +64,35 @@ public class WumpusWorld {
 		return result;
 	}
 
-	public String getPitAndLocationString() {
+	public String getPitAndRoomString() {
 		String result = "";
 		for (String p : pits) {
-			result += "(at pit" + p + " l" + p + ")\n";
+			result += "(at pit" + p + " r" + p + ")\n";
 		}
 		return result;
 	}
 
-	public String getSmellAndLocationString() {
+	public String getSmellAndRoomString() {
 		String result = "";
 		for (String p : smellLocations) {
-			result += "(at s" + p + " l" + p + ")\n";
+			result += "(at s" + p + " r" + p + ")\n";
 		}
 		return result;
 	}
 
-	public String getBreezeAndLocationString() {
+	public String getBreezeAndRoomString() {
 		String result = "";
 		for (String p : breezeLocations) {
-			result += "(at b" + p + " l" + p + ")\n";
+			result += "(at b" + p + " r" + p + ")\n";
 		}
 		return result;
 	}
 
-	public String getLocationsString() {
+	public String getRoomsString() {
 		TreeSet<String> sortedKeys = new TreeSet<String>(allAdjacent.keySet());
 		String result = "";
 		for (String s : sortedKeys) {
-			result += "l" + s + " ";
+			result += "r" + s + " ";
 		}
 		return result;
 	}
@@ -104,7 +104,7 @@ public class WumpusWorld {
 
 			Set<String> adjs = allAdjacent.get(s);
 			for (String sq : adjs) {
-				result += "(adjacent l" + s + " l" + sq + ")\n";
+				result += "(adjacent r" + s + " r" + sq + ")\n";
 			}
 		}
 		return result;
@@ -179,7 +179,7 @@ public class WumpusWorld {
 	}
 
 	public String getGoldLocation() {
-		return "l" + goldLocation;
+		return "r" + goldLocation;
 	}
 
 	/* For testing */

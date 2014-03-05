@@ -7,45 +7,22 @@
 
 (:action moveForward 
 	:parameters (?p - player, ?from - room, ?to - room)
-	:precondition (and (and playerIsAlive (at ?from ?p)) (roomInFront ?from ?to)) 
+	:precondition (and (and playerIsAlive (at ?from ?p)) (adjacent ?from ?to)) 
 	:effect ((when (isFree ?to) (and (at ?p ?to) (not (at ?p ?from))))
-			(when (isWall ?to) bump) //??
 			(when (wumpusAt ?to) (and (not playerIsAlive) (not (at ?p ?from))))
 			(when (pitAt ?to) (and (not playerIsAlive) (not (at ?p ?from)))))
 )
 
-(:action turnLeft -- just nu tar man aldrig bort roomInFront från något rum så efter ett tag blir alla in front
-	:parameters (?p - player, ?at - room, ?facing - room)
-	:precondition (playerIsAlive)
-	:effect ((when (and facingN (westOf ?at ?facing)) (and (roomInFront ?facing) (and facingW (not facingN))))
-			(when (and facingW (southOf ?at ?facing)) (and (roomInFront ?facing) (and facingS (not facingW))))
-			(when (and facingS (eastOf ?at ?facing)) (and (roomInFront ?facing) (and facingE (not facingS))))
-			(when (and facingE (northOf ?at ?facing)) (and (roomInFront ?facing) (and facingN (not facingE)))))
-)
-
-(:action turnRight
-	:parameters (?p - player, ?at - room, ?facing - room)
-	:precondition (playerIsAlive)
-	:effect samma som left fast andra hållet
-)
-
 (:action shoot
 	:parameters (?p - player, ?a - arrow, ?from - room, ?to - room)
-	:precondition (and (playerIsAlive) (roomInFront ?from ?to))
-	(when (has ?p ?a) and (not (has ?p ?a)) (moveArrow ?a ?from ?to))
-)
-
-(:action moveArrow ----------------funkar inte, måste fixa så man får rummet efter
-	:parameters (?a - arrow, ?from - room, ?to - room)
-	:precondition (roomInFront ?from ?to))
-	:effect ((when (wumpusAt ?to) (and(not (wumpusAt ?to)) (Howl!!![hur?])))
-			(when (pitAt ?to) (moveArrow ?a ?to [nästa rum]))
-			(when (isFree ?to) (moveArrow ?a ?to [nästa rum])))
+	:precondition (and (and (playerIsAlive) (canShoot ?from ?to)) (has ?p ?a))
+	(and (not (has ?p ?a)) (not (wumpusAt ?to)))
 )
 
 (:action grab 
-	:parameters (?p - player, ?r - room)
-	:effect (when (glitterInRoom ?r) (and (has ?p (goldIn ?r)) (not (glitterInRoom ?r))))
+	:parameters (?p - player, ?r - room, ?g - gold)
+	:precondition (and (and (at ?r ?g) (at ?r ?p)) playerIsAlive)
+	:effect (and (has ?p ?g) (not (at ?r ?g)))
 )
 
 (:action climb
@@ -53,7 +30,6 @@
 	:precondition (and playerIsAlive (at ?p l11))
 	:effect (exit ?p l11)
 
-(:action 
-	:parameters (?p - player, ?r - room)
-	:effect (not (at ?p ?r)) // och sluta spelet typ
+
+
 
