@@ -4,86 +4,60 @@ import java.util.TreeSet;
 
 public class WumpusWorld {
 	HashMap<String, TreeSet<String>> allAdjacent;
-	TreeSet<String> pits, smellLocations, breezeLocations;
-	private String wumpusLocation, goldLocation;
+	TreeSet<String> pits, stenchRooms, breezeRooms;
+	private String wumpusRoom, goldRoom;
 	int size;
 
 	public WumpusWorld(int s) {
 		size = s;
 		allAdjacent = new HashMap<String, TreeSet<String>>();
 		pits = new TreeSet<String>();
-		smellLocations = new TreeSet<String>();
-		breezeLocations = new TreeSet<String>();
+		stenchRooms = new TreeSet<String>();
+		breezeRooms = new TreeSet<String>();
 		initWorld();
 
 		do {
-			wumpusLocation = getRandomLocation();
-		} while (pits.contains(wumpusLocation));
+			wumpusRoom = getRandomRoom();
+		} while (pits.contains(wumpusRoom));
 
 		do {
-			goldLocation = getRandomLocation();
-		} while (pits.contains(goldLocation)
-				|| goldLocation.equals(wumpusLocation));
+			goldRoom = getRandomRoom();
+		} while (pits.contains(goldRoom) || goldRoom.equals(wumpusRoom));
 		initWarnings();
 	}
 
 	private void initWarnings() {
-		for (String adjLoc : allAdjacent.get(wumpusLocation)) {
-			smellLocations.add(adjLoc);
+		for (String adjLoc : allAdjacent.get(wumpusRoom)) {
+			stenchRooms.add(adjLoc);
 		}
 
 		for (String pit : pits) {
 			for (String adjLoc : allAdjacent.get(pit)) {
-				breezeLocations.add(adjLoc);
+				breezeRooms.add(adjLoc);
 			}
 		}
 	}
 
-	/* For listing of all the pit locations */
-	public String getPitsListString() {
-		String result = "";
-		for (String s : pits) {
-			result += "pit" + s + " ";
-		}
-		return result;
-	}
-
-	public String getSmellsListString() {
-		String result = "";
-		for (String s : smellLocations) {
-			result += "s" + s + " ";
-		}
-		return result;
-	}
-
-	public String getBreezeListString() {
-		String result = "";
-		for (String s : breezeLocations) {
-			result += "b" + s + " ";
-		}
-		return result;
-	}
-
-	public String getPitAndRoomString() {
+	public String getPitString() {
 		String result = "";
 		for (String p : pits) {
-			result += "(at pit" + p + " r" + p + ")\n";
+			result += "(pitAt" + " r" + p + ")\n";
 		}
 		return result;
 	}
 
-	public String getSmellAndRoomString() {
+	public String getStenchString() {
 		String result = "";
-		for (String p : smellLocations) {
-			result += "(at s" + p + " r" + p + ")\n";
+		for (String p : stenchRooms) {
+			result += "(stenchAt" + " r" + p + ")\n";
 		}
 		return result;
 	}
 
-	public String getBreezeAndRoomString() {
+	public String getBreezeString() {
 		String result = "";
-		for (String p : breezeLocations) {
-			result += "(at b" + p + " r" + p + ")\n";
+		for (String p : breezeRooms) {
+			result += "(breezeAt" + " r" + p + ")\n";
 		}
 		return result;
 	}
@@ -161,11 +135,11 @@ public class WumpusWorld {
 		return i > 0 && j > 0 && i <= size && j <= size;
 	}
 
-	private String getRandomLocation() {
+	private String getRandomRoom() {
 		int x = getRandomIndex();
 		int y = getRandomIndex();
 		if (x == 1 && y == 1) {
-			return getRandomLocation();
+			return getRandomRoom();
 		}
 		return "" + x + y;
 	}
@@ -174,12 +148,12 @@ public class WumpusWorld {
 		return 1 + (int) (Math.random() * size);
 	}
 
-	public String getWumpusLocation() {
-		return "l" + wumpusLocation;
+	public String getWumpusString() {
+		return "r" + wumpusRoom;
 	}
 
-	public String getGoldLocation() {
-		return "r" + goldLocation;
+	public String getGoldRoom() {
+		return "r" + goldRoom;
 	}
 
 	/* For testing */
@@ -207,35 +181,33 @@ public class WumpusWorld {
 		}
 		world[0][0] = "A";
 
-		// TreeSet<String> pits, smellLocations, breezeLocations;
-		// private String wumpusLocation, goldLocation;
+		// TreeSet<String> pits, stenchRooms, breezeRooms;
+		// private String wumpusRoom, goldRoom;
 		for (String p : pits) {
 			int x = Character.getNumericValue(p.charAt(0));
 			int y = Character.getNumericValue(p.charAt(1));
 			world[x - 1][y - 1] += "P";
 		}
 
-		for (String s : smellLocations) {
+		for (String s : stenchRooms) {
 			int x = Character.getNumericValue(s.charAt(0));
 			int y = Character.getNumericValue(s.charAt(1));
 			world[x - 1][y - 1] += "S";
 		}
 
-		for (String b : breezeLocations) {
+		for (String b : breezeRooms) {
 			int x = Character.getNumericValue(b.charAt(0));
 			int y = Character.getNumericValue(b.charAt(1));
 			world[x - 1][y - 1] += "B";
 		}
 
-		int x = Character.getNumericValue(wumpusLocation.charAt(0));
-		int y = Character.getNumericValue(wumpusLocation.charAt(1));
+		int x = Character.getNumericValue(wumpusRoom.charAt(0));
+		int y = Character.getNumericValue(wumpusRoom.charAt(1));
 		world[x - 1][y - 1] += "W";
 
-		x = Character.getNumericValue(goldLocation.charAt(0));
-		y = Character.getNumericValue(goldLocation.charAt(1));
+		x = Character.getNumericValue(goldRoom.charAt(0));
+		y = Character.getNumericValue(goldRoom.charAt(1));
 		world[x - 1][y - 1] += "G";
-
-
 
 		int cellSize = 6;
 		int diff;

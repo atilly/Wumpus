@@ -28,9 +28,13 @@ public class Generator {
 	private void createProblemString(StringBuilder sb) {
 		appendHeader(sb);
 		appendObjects(sb, wsm);
+		sb.append("\n");
 		appendSensors(sb, wsm);
+		sb.append("\n");
 		appendDangers(sb, wsm);
+		sb.append("\n");
 		appendInit(sb, wsm);
+		sb.append("\n");
 		appendGoal(sb);
 		sb.append(")\n");
 		sb.append(")");
@@ -43,49 +47,43 @@ public class Generator {
 
 	private static void appendObjects(StringBuilder sb, WumpusWorld wsm) {
 		sb.append("(:objects a0 - arrow\n");
-		sb.append(whiteSpace + "g0 - gold\n");
 		sb.append(whiteSpace + wsm.getRoomsString());
 		sb.append(" - room\n");
 		sb.append(whiteSpace + "p0 - player\n");
-
 		sb.append(")\n");
 	}
 
 	private static void appendSensors(StringBuilder sb, WumpusWorld wsm2) {
-		sb.append("(:sensors ");
-		sb.append(wsm2.getSmellsListString());
-		sb.append(" - smell\n");
-		sb.append(whiteSpace + wsm2.getBreezeListString());
-		sb.append(" - breeze\n");
+		sb.append("(:sensors stench breeze\n");
 		sb.append(")\n");
-		// smell breeze - sensor
 	}
 
 	private static void appendDangers(StringBuilder sb, WumpusWorld wsm2) {
-		sb.append("(:dangers w0 - wumpus\n");
-		sb.append(whiteSpace + wsm2.getPitsListString());
-		sb.append(" - pit\n");
+		sb.append("(:dangers wumpus pit\n");
 		sb.append(")\n");
 	}
 
 	private static void appendInit(StringBuilder sb, WumpusWorld wsm) {
 		sb.append("(:init\n");
 		sb.append("(at p0 r11)\n");
-		sb.append("(at g0 " + wsm.getGoldLocation() + ")\n");
-		sb.append(wsm.getSmellAndRoomString());
-		sb.append(wsm.getBreezeAndRoomString());
-		sb.append("(at w0 " + wsm.getWumpusLocation() + ")\n");
-		sb.append(wsm.getPitAndRoomString());
-		sb.append("(have a0)\n");
+		sb.append("(goldAt " + wsm.getGoldRoom() + ")\n");
+		sb.append(wsm.getStenchString());
+		sb.append(wsm.getBreezeString());
+		sb.append("(wumpusAt " + wsm.getWumpusString() + ")\n");
+		sb.append(wsm.getPitString());
+		sb.append("(has a0)\n");
 		sb.append(wsm.getAdjacencyString());
 		sb.append(")\n");
 	}
 
 	private static void appendGoal(StringBuilder sb) {
 		sb.append("(:goal\n");
-		sb.append("(and\n");
-		sb.append("(at p0 r11)\n");
-		sb.append("(have g0)\n");
-		sb.append(")\n");
+		sb.append(whiteSpace + "(and\n");
+		sb.append(whiteSpace + whiteSpace + "(and\n");
+		sb.append(whiteSpace + whiteSpace + whiteSpace +"(at p0 r11)\n");
+		sb.append(whiteSpace + whiteSpace + whiteSpace +"(has g0)\n");
+		sb.append(whiteSpace + whiteSpace + ")\n");
+		sb.append(whiteSpace + whiteSpace + "(isAlive)\n");
+		sb.append(whiteSpace + ")\n");
 	}
 }

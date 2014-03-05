@@ -33,3 +33,15 @@
 
 
 
+
+(:sensor smell
+    :parameters (?p - player, ?r - room)
+    :condition (at ?p ?r)
+    :sensed (stench ?r)
+)
+
+(:sensor feelBreeze
+    :parameters (?p - player, ?r - room)
+    :condition (at ?p ?r)
+    :sensed (breeze ?r)
+)

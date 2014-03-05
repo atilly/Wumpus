@@ -1,35 +1,38 @@
 (define (problem wumpusworld1)
 (:domain wumpusworld)
 (:objects a0 - arrow
-		  g0 - gold
 		  r11 r12 r13 r14 r21 r22 r23 r24 r31 r32 r33 r34 r41 r42 r43 r44  - room
 		  p0 - player
 )
-(:sensors s11 s13 s22  - smell
-		  b12 b21 b23 b24 b32 b33 b41 b44  - breeze
+
+(:sensors stench breeze
 )
-(:dangers w0 - wumpus
-		  pit22 pit31 pit34  - pit
+
+(:dangers wumpus pit
 )
+
 (:init
 (at p0 r11)
-(at g0 r21)
-(at s11 r11)
-(at s13 r13)
-(at s22 r22)
-(at b12 r12)
-(at b21 r21)
-(at b23 r23)
-(at b24 r24)
-(at b32 r32)
-(at b33 r33)
-(at b41 r41)
-(at b44 r44)
-(at w0 l12)
-(at pit22 r22)
-(at pit31 r31)
-(at pit34 r34)
-(have a0)
+(goldAt r31)
+(stenchAt r14)
+(stenchAt r23)
+(stenchAt r34)
+(breezeAt r12)
+(breezeAt r13)
+(breezeAt r21)
+(breezeAt r22)
+(breezeAt r23)
+(breezeAt r24)
+(breezeAt r32)
+(breezeAt r33)
+(breezeAt r42)
+(breezeAt r44)
+(wumpusAt r24)
+(pitAt r22)
+(pitAt r23)
+(pitAt r34)
+(pitAt r43)
+(has a0)
 (adjacent r11 r12)
 (adjacent r11 r21)
 (adjacent r12 r11)
@@ -79,10 +82,14 @@
 (adjacent r44 r34)
 (adjacent r44 r43)
 )
+
 (:goal
-(and
-(at p0 r11)
-(have g0)
-)
+		  (and
+		  		  (and
+		  		  		  (at p0 r11)
+		  		  		  (has g0)
+		  		  )
+		  		  (isAlive)
+		  )
 )
 )

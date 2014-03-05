@@ -11,7 +11,7 @@
 	(has ?x)
 	(adjacent ?x ?y)
 	(at ?x ?y)
-	(isAlive ?p - player)
+	(isAlive)
 	(canShoot ?r1 ?r2)
 	(wumpusAt ?r - room)
 	(pitAt ?r - room)
@@ -28,13 +28,13 @@
 (:action move
 	:parameters (?p - player, ?from - room, ?to - room)
 	:precondition (and 
-		(and (isAlive ?p) (at ?from ?p)) (adjacent ?from ?to))
+		(and (isAlive) (at ?from ?p)) (adjacent ?from ?to))
 	:effect (
 		(when (wumpusAt ?to) 
-		(not playerIsAlive))
+		(not isAlive))
 
 		(when (pitAt ?to) 
-		(not playerIsAlive))
+		(not isAlive))
 
 		(and (at ?p ?to) (not (at ?p ?from)))
 		)
@@ -43,7 +43,7 @@
 (:action shoot
 	:parameters (?p - player, ?a - arrow, ?from - room, ?to - room)
 	:precondition (and 
-		(and (playerIsAlive) (canShoot ?from ?to)) 
+		(and (isAlive) (canShoot ?from ?to)) 
 		(has ?p ?a)
 		)
 	:effect (and (not (has ?a)) (not (wumpusAt ?to)))
@@ -55,16 +55,5 @@
 	:effect (and (not (at ?g ?r)) (has ?g))
 )
 
-(:sensor smell
-    :parameters (?p - player, ?r - room)
-    :condition (at ?p ?r)
-    :sensed (stench ?r)
-)
-
-(:sensor feelBreeze
-    :parameters (?p - player, ?r - room)
-    :condition (at ?p ?r)
-    :sensed (breeze ?r)
-)
 
 )
