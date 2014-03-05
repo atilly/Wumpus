@@ -67,12 +67,13 @@ public class Generator {
 		sb.append("(:init\n");
 		sb.append("(at p0 r11)\n");
 		sb.append("(isAlive)\n");
+		sb.append("(has a0)\n");
+		sb.append("(wumpusAt " + wsm.getWumpusString() + ")\n");
 		sb.append("(goldAt " + wsm.getGoldRoom() + ")\n");
 		sb.append(wsm.getStenchString());
 		sb.append(wsm.getBreezeString());
-		sb.append("(wumpusAt " + wsm.getWumpusString() + ")\n");
 		sb.append(wsm.getPitString());
-		sb.append("(has a0)\n");
+		sb.append(wsm.getCanShootString());
 		sb.append(wsm.getAdjacencyString());
 		sb.append(")\n");
 	}
@@ -81,8 +82,8 @@ public class Generator {
 		sb.append("(:goal\n");
 		sb.append(whiteSpace + "(and\n");
 		sb.append(whiteSpace + whiteSpace + "(and\n");
-		sb.append(whiteSpace + whiteSpace + whiteSpace +"(at p0 r11)\n");
-		sb.append(whiteSpace + whiteSpace + whiteSpace +"(hasGold)\n");
+		sb.append(whiteSpace + whiteSpace + whiteSpace + "(at p0 r11)\n");
+		sb.append(whiteSpace + whiteSpace + whiteSpace + "(hasGold)\n");
 		sb.append(whiteSpace + whiteSpace + ")\n");
 		sb.append(whiteSpace + whiteSpace + "(isAlive)\n");
 		sb.append(whiteSpace + ")\n");

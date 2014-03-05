@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 public class WumpusWorld {
 	HashMap<String, TreeSet<String>> allAdjacent;
-	TreeSet<String> pits, stenchRooms, breezeRooms;
+	TreeSet<String> pits, stenchRooms, breezeRooms, canShoot;
 	private String wumpusRoom, goldRoom;
 	int size;
 
@@ -14,22 +14,28 @@ public class WumpusWorld {
 		pits = new TreeSet<String>();
 		stenchRooms = new TreeSet<String>();
 		breezeRooms = new TreeSet<String>();
+		canShoot = new TreeSet<String>();
 		initWorld();
 
 		do {
 			wumpusRoom = getRandomRoom();
 		} while (pits.contains(wumpusRoom));
 		initCanShootRooms();
-		
+
 		do {
 			goldRoom = getRandomRoom();
-		} while (pits.contains(goldRoom) || goldRoom.equals(wumpusRoom));
+		} while (pits.contains(goldRoom));
 		initWarnings();
 	}
 
 	private void initCanShootRooms() {
-		// TODO sätt canShoot r1 wr på alla i linje med wr
-		
+		int x = getDigit(wumpusRoom, 0);
+		int y = getDigit(wumpusRoom, 1);
+		for (int i = 1; i <= size; i++) {
+			canShoot.add("" + x + i);
+			canShoot.add("" + i + y);
+		}
+
 	}
 
 	private void initWarnings() {
@@ -66,6 +72,15 @@ public class WumpusWorld {
 			result += "(breeze" + " r" + p + ")\n";
 		}
 		return result;
+	}
+
+	public String getCanShootString() {
+		String result = "";
+		for (String c : canShoot) {
+			result += "(canShoot r" + c + " r" + wumpusRoom + ")\n";
+		}
+		return result;
+
 	}
 
 	public String getRoomsString() {
@@ -168,7 +183,7 @@ public class WumpusWorld {
 
 		for (int i = world.length - 1; i >= 0; i--) {
 			for (int j = 0; j < world.length; j++) {
-				System.out.print(world[i][j]);
+				System.out.print(world[j][i]);
 			}
 			System.out.println();
 		}
@@ -190,32 +205,38 @@ public class WumpusWorld {
 		// TreeSet<String> pits, stenchRooms, breezeRooms;
 		// private String wumpusRoom, goldRoom;
 		for (String p : pits) {
-			int x = Character.getNumericValue(p.charAt(0));
-			int y = Character.getNumericValue(p.charAt(1));
+			int x = getDigit(p,0);
+			int y = getDigit(p,1);
 			world[x - 1][y - 1] += "P";
 		}
 
 		for (String s : stenchRooms) {
-			int x = Character.getNumericValue(s.charAt(0));
-			int y = Character.getNumericValue(s.charAt(1));
+			int x = getDigit(s,0);
+			int y = getDigit(s,1);
 			world[x - 1][y - 1] += "S";
 		}
 
 		for (String b : breezeRooms) {
-			int x = Character.getNumericValue(b.charAt(0));
-			int y = Character.getNumericValue(b.charAt(1));
+			int x = getDigit(b,0);
+			int y = getDigit(b,1);
 			world[x - 1][y - 1] += "B";
 		}
+		
+		for (String c : canShoot) {
+			int x = getDigit(c,0);
+			int y = getDigit(c,1);
+			world[x - 1][y - 1] += "C";
+		}
 
-		int x = Character.getNumericValue(wumpusRoom.charAt(0));
-		int y = Character.getNumericValue(wumpusRoom.charAt(1));
+		int x = getDigit(wumpusRoom, 0);
+		int y = getDigit(wumpusRoom, 1);
 		world[x - 1][y - 1] += "W";
 
-		x = Character.getNumericValue(goldRoom.charAt(0));
-		y = Character.getNumericValue(goldRoom.charAt(1));
+		x = getDigit(goldRoom,0);
+		y = getDigit(goldRoom,1);
 		world[x - 1][y - 1] += "G";
 
-		int cellSize = 6;
+		int cellSize = 7;
 		int diff;
 		for (int i = 1; i <= size; i++) {
 			for (int j = 1; j <= size; j++) {
@@ -235,5 +256,9 @@ public class WumpusWorld {
 		}
 
 		return world;
+	}
+
+	public int getDigit(String s, int digit) {
+		return Character.getNumericValue(s.charAt(digit));
 	}
 }
