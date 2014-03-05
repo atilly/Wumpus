@@ -210,31 +210,10 @@ public class WumpusWorld {
 		}
 		world[0][0] = "A";
 
-		// TreeSet<String> pits, stenchRooms, breezeRooms;
-		// private String wumpusRoom, goldRoom;
-		for (String p : pits) {
-			int x = getDigit(p, 0);
-			int y = getDigit(p, 1);
-			world[x - 1][y - 1] += "P";
-		}
-
-		for (String s : stenchRooms) {
-			int x = getDigit(s, 0);
-			int y = getDigit(s, 1);
-			world[x - 1][y - 1] += "S";
-		}
-
-		for (String b : breezeRooms) {
-			int x = getDigit(b, 0);
-			int y = getDigit(b, 1);
-			world[x - 1][y - 1] += "B";
-		}
-
-		for (String c : canShoot) {
-			int x = getDigit(c, 0);
-			int y = getDigit(c, 1);
-			world[x - 1][y - 1] += "C";
-		}
+		addToWorldString(world, pits, "P");
+		addToWorldString(world, stenchRooms, "S");
+		addToWorldString(world, breezeRooms, "B");
+		addToWorldString(world, canShoot, "C");
 
 		int x = getDigit(wumpusRoom, 0);
 		int y = getDigit(wumpusRoom, 1);
@@ -264,6 +243,15 @@ public class WumpusWorld {
 		}
 
 		return world;
+	}
+
+	public static void addToWorldString(String[][] world, TreeSet<String> set,
+			String string) {
+		for (String s : set) {
+			int x = getDigit(s, 0);
+			int y = getDigit(s, 1);
+			world[x - 1][y - 1] += string;
+		}
 	}
 
 	/* Helper method */
