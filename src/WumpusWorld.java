@@ -41,7 +41,7 @@ public class WumpusWorld {
 	public String getPitString() {
 		String result = "";
 		for (String p : pits) {
-			result += "(pitAt" + " r" + p + ")\n";
+			result += "(pit" + " r" + p + ")\n";
 		}
 		return result;
 	}
@@ -49,7 +49,7 @@ public class WumpusWorld {
 	public String getStenchString() {
 		String result = "";
 		for (String p : stenchRooms) {
-			result += "(stenchAt" + " r" + p + ")\n";
+			result += "(stench" + " r" + p + ")\n";
 		}
 		return result;
 	}
@@ -57,7 +57,7 @@ public class WumpusWorld {
 	public String getBreezeString() {
 		String result = "";
 		for (String p : breezeRooms) {
-			result += "(breezeAt" + " r" + p + ")\n";
+			result += "(breeze" + " r" + p + ")\n";
 		}
 		return result;
 	}

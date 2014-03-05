@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Generator {
 	private final static String path = "Wumpusworld/";
-	private final static String file = "problem2";
+	private final static String file = "wumpus_problem";
 	WumpusWorld wsm;
 	static String whiteSpace = "		  ";
 
@@ -41,7 +41,7 @@ public class Generator {
 	}
 
 	private static void appendHeader(StringBuilder sb) {
-		sb.append("(define (problem wumpusworld1)\n");
+		sb.append("(define (problem wumpusworld)\n");
 		sb.append("(:domain wumpusworld)\n");
 	}
 
@@ -54,13 +54,13 @@ public class Generator {
 	}
 
 	private static void appendSensors(StringBuilder sb, WumpusWorld wsm2) {
-		sb.append("(:sensors stench breeze\n");
-		sb.append(")\n");
+		sb.append(";;(:sensors stench breeze\n");
+		sb.append(";;)\n");
 	}
 
 	private static void appendDangers(StringBuilder sb, WumpusWorld wsm2) {
-		sb.append("(:dangers wumpus pit\n");
-		sb.append(")\n");
+		sb.append(";;(:dangers wumpus pit\n");
+		sb.append(";;)\n");
 	}
 
 	private static void appendInit(StringBuilder sb, WumpusWorld wsm) {
@@ -81,7 +81,7 @@ public class Generator {
 		sb.append(whiteSpace + "(and\n");
 		sb.append(whiteSpace + whiteSpace + "(and\n");
 		sb.append(whiteSpace + whiteSpace + whiteSpace +"(at p0 r11)\n");
-		sb.append(whiteSpace + whiteSpace + whiteSpace +"(has g0)\n");
+		sb.append(whiteSpace + whiteSpace + whiteSpace +"(hasGold)\n");
 		sb.append(whiteSpace + whiteSpace + ")\n");
 		sb.append(whiteSpace + whiteSpace + "(isAlive)\n");
 		sb.append(whiteSpace + ")\n");
