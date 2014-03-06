@@ -5,12 +5,12 @@ import java.io.IOException;
 public class Generator {
 	private final static String path = "Wumpusworld/";
 	private final static String file = "wumpus_problem";
-	WumpusWorld wsm;
+	WumpusWorld ww;
 	static String whiteSpace = "		  ";
 
-	public Generator(int size) {
-		wsm = new WumpusWorld(size);
-		wsm.printStringRepresentation();
+	public Generator(int size, int nbrGold, int nbrWumpus) {
+		ww = new WumpusWorld(size, nbrGold, nbrWumpus);
+		ww.printStringRepresentation();
 	}
 
 	public void print() {
@@ -27,15 +27,11 @@ public class Generator {
 
 	private void createProblemString(StringBuilder sb) {
 		appendHeader(sb);
-		appendObjects(sb, wsm);
+		appendObjects(sb, ww);
 		sb.append("\n");
-		appendSensors(sb, wsm);
+		appendInit(sb, ww);
 		sb.append("\n");
-		appendDangers(sb, wsm);
-		sb.append("\n");
-		appendInit(sb, wsm);
-		sb.append("\n");
-		appendGoal(sb);
+		appendGoal(sb, ww);
 		sb.append(")\n");
 		sb.append(")");
 	}
@@ -45,45 +41,35 @@ public class Generator {
 		sb.append("(:domain wumpusworld)\n");
 	}
 
-	private static void appendObjects(StringBuilder sb, WumpusWorld wsm) {
-		sb.append("(:objects a0 - arrow\n");
-		sb.append(whiteSpace + wsm.getRoomsString());
+	private static void appendObjects(StringBuilder sb, WumpusWorld ww) {
+		sb.append("(:objects a1 - arrow\n");
+		sb.append(whiteSpace + ww.getRoomsString());
 		sb.append(" - room\n");
-		sb.append(whiteSpace + "p0 - player\n");
+		sb.append(whiteSpace + "p1 - player\n");
+		sb.append(whiteSpace + ww.getGoldListString());
 		sb.append(")\n");
 	}
 
-	private static void appendSensors(StringBuilder sb, WumpusWorld wsm2) {
-		sb.append(";;(:sensors stench breeze\n");
-		sb.append(";;)\n");
-	}
-
-	private static void appendDangers(StringBuilder sb, WumpusWorld wsm2) {
-		sb.append(";;(:dangers wumpus pit\n");
-		sb.append(";;)\n");
-	}
-
-	private static void appendInit(StringBuilder sb, WumpusWorld wsm) {
+	private static void appendInit(StringBuilder sb, WumpusWorld ww) {
 		sb.append("(:init\n");
-		sb.append("(at p0 r11)\n");
+		sb.append("(at p1 r11)\n");
 		sb.append("(isAlive)\n");
-		sb.append("(has a0)\n");
-		sb.append("(wumpusAt " + wsm.getWumpusString() + ")\n");
-		sb.append("(goldAt " + wsm.getGoldRoom() + ")\n");
-		sb.append(wsm.getStenchString());
-		sb.append(wsm.getBreezeString());
-		sb.append(wsm.getPitString());
-		sb.append(wsm.getCanShootString());
-		sb.append(wsm.getAdjacencyString());
+		sb.append("(has a1)\n");
+		sb.append(ww.getWumpusString());
+		sb.append(ww.getGoldString());
+		sb.append(ww.getPitString());
+		sb.append(ww.getCanShootString());
+		sb.append(ww.getAdjacencyString());
 		sb.append(")\n");
 	}
 
-	private static void appendGoal(StringBuilder sb) {
+	private static void appendGoal(StringBuilder sb, WumpusWorld ww) {
 		sb.append("(:goal\n");
 		sb.append(whiteSpace + "(and\n");
 		sb.append(whiteSpace + whiteSpace + "(and\n");
-		sb.append(whiteSpace + whiteSpace + whiteSpace + "(at p0 r11)\n");
-		sb.append(whiteSpace + whiteSpace + whiteSpace + "(hasGold)\n");
+		sb.append(whiteSpace + whiteSpace + whiteSpace + "(at p1 r11)\n");
+		sb.append(whiteSpace + whiteSpace + whiteSpace + "("
+				+ ww.getGoldGoalString() + ")\n");
 		sb.append(whiteSpace + whiteSpace + ")\n");
 		sb.append(whiteSpace + whiteSpace + "(isAlive)\n");
 		sb.append(whiteSpace + ")\n");

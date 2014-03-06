@@ -1,48 +1,27 @@
 (define (problem wumpusworld)
 (:domain wumpusworld)
-(:objects a0 - arrow
+(:objects a1 - arrow
 		  r11 r12 r13 r14 r21 r22 r23 r24 r31 r32 r33 r34 r41 r42 r43 r44  - room
-		  p0 - player
+		  p1 - player
+		  g1 - gold
 )
 
-;;(:sensors stench breeze
-;;)
-
-;;(:dangers wumpus pit
-;;)
-
 (:init
-(at p0 r11)
+(at p1 r11)
 (isAlive)
-(has a0)
-(wumpusAt r21)
-(goldAt r23)
-(stench r11)
-(stench r22)
-(stench r31)
-(breeze r14)
-(breeze r22)
-(breeze r23)
-(breeze r24)
-(breeze r31)
-(breeze r32)
-(breeze r33)
-(breeze r34)
-(breeze r41)
-(breeze r42)
-(breeze r43)
-(breeze r44)
-(pit r24)
+(has a1)
+(wumpusAt r31)
+(at g1 r13)
+(pit r14)
 (pit r32)
-(pit r34)
-(pit r42)
-(canShoot r11 r21)
-(canShoot r21 r21)
-(canShoot r22 r21)
-(canShoot r23 r21)
-(canShoot r24 r21)
-(canShoot r31 r21)
-(canShoot r41 r21)
+(pit r43)
+(canShoot r11 r31)
+(canShoot r21 r31)
+(canShoot r31 r31)
+(canShoot r32 r31)
+(canShoot r33 r31)
+(canShoot r34 r31)
+(canShoot r41 r31)
 (adjacent r11 r12)
 (adjacent r11 r21)
 (adjacent r12 r11)
@@ -96,8 +75,8 @@
 (:goal
 		  (and
 		  		  (and
-		  		  		  (at p0 r11)
-		  		  		  (hasGold)
+		  		  		  (at p1 r11)
+		  		  		  (has g1)
 		  		  )
 		  		  (isAlive)
 		  )

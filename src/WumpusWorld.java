@@ -1,34 +1,31 @@
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 public class WumpusWorld {
 	HashMap<String, TreeSet<String>> allAdjacent;
-	TreeSet<String> pits, stenchRooms, breezeRooms, canShoot;
-	private String wumpusRoom, goldRoom;
-	int size;
+	TreeSet<String> pits, goldRooms, wumpusRooms;
+	HashMap<String, TreeSet<String>> canShoot;
+	int size, nbrGold, nbrWumpus;
 
-	public WumpusWorld(int s) {
-		size = s;
+	public WumpusWorld(int size, int nbrGold, int nbrWumpus) {
+		this.size = size;
+		this.nbrGold = nbrGold;
+		this.nbrWumpus = nbrWumpus;
 		allAdjacent = new HashMap<String, TreeSet<String>>();
 		pits = new TreeSet<String>();
-		stenchRooms = new TreeSet<String>();
-		breezeRooms = new TreeSet<String>();
-		canShoot = new TreeSet<String>();
+		canShoot = new HashMap<String, TreeSet<String>>();
+		goldRooms = new TreeSet<String>();
+		wumpusRooms = new TreeSet<String>();
+
 		initWorld();
-
-		do {
-			wumpusRoom = getRandomRoom();
-		} while (pits.contains(wumpusRoom));
+		initWumpusRooms();
+		initGoldRooms();
 		initCanShootRooms();
-
-		do {
-			goldRoom = getRandomRoom();
-		} while (pits.contains(goldRoom));
-		initWarnings();
 	}
 
-	/* The rooms with pits. */
+	/* The 'pit rxx' String */
 	public String getPitString() {
 		String result = "";
 		for (String p : pits) {
@@ -37,35 +34,7 @@ public class WumpusWorld {
 		return result;
 	}
 
-	/* The rooms with stench, can probably be removed. */
-	public String getStenchString() {
-		String result = "";
-		for (String p : stenchRooms) {
-			result += "(stench" + " r" + p + ")\n";
-		}
-		return result;
-	}
-
-	/* The rooms with breezes, can probably be removed. */
-	public String getBreezeString() {
-		String result = "";
-		for (String p : breezeRooms) {
-			result += "(breeze" + " r" + p + ")\n";
-		}
-		return result;
-	}
-
-	/* The rooms from which you can shoot the Wumpus */
-	public String getCanShootString() {
-		String result = "";
-		for (String c : canShoot) {
-			result += "(canShoot r" + c + " r" + wumpusRoom + ")\n";
-		}
-		return result;
-
-	}
-
-	/* All rooms */
+	/* List of all rooms */
 	public String getRoomsString() {
 		TreeSet<String> sortedKeys = new TreeSet<String>(allAdjacent.keySet());
 		String result = "";
@@ -73,6 +42,29 @@ public class WumpusWorld {
 			result += "r" + s + " ";
 		}
 		return result;
+	}
+
+	/* List of all the gold */
+	public String getGoldListString() {
+		String result = "";
+		for (int i = 0; i < nbrGold; i++) {
+			result += "g" + (i + 1) + " ";
+		}
+		result += "- gold\n";
+		return result;
+	}
+
+	/* The rooms from which you can shoot the Wumpus */
+	public String getCanShootString() {
+		String result = "";
+
+		for (String wumpusRoom : canShoot.keySet()) {
+			for (String room : canShoot.get(wumpusRoom)) {
+				result += "(canShoot r" + room + " r" + wumpusRoom + ")\n";
+			}
+		}
+		return result;
+
 	}
 
 	/* All the adjacency relations */
@@ -89,12 +81,24 @@ public class WumpusWorld {
 		return result;
 	}
 
+	/* The 'wumpusAt rxx' String */
 	public String getWumpusString() {
-		return "r" + wumpusRoom;
+		String result = "";
+		for (String s : wumpusRooms) {
+			result += "(wumpusAt " + "r" + s + ")\n";
+		}
+		return result;
 	}
 
-	public String getGoldRoom() {
-		return "r" + goldRoom;
+	/* All the 'at gx rxx' etc. */
+	public String getGoldString() {
+		String result = "";
+		int g = 1;
+		for (String s : goldRooms) {
+			result += "(at " + "g" + g + " r" + s + ")\n";
+			g++;
+		}
+		return result;
 	}
 
 	/* For testing */
@@ -109,26 +113,37 @@ public class WumpusWorld {
 		}
 	}
 
-	/* Initiates the rooms from which it is possible to shoot the Wumpus. */
-	private void initCanShootRooms() {
-		int x = getDigit(wumpusRoom, 0);
-		int y = getDigit(wumpusRoom, 1);
-		for (int i = 1; i <= size; i++) {
-			canShoot.add("" + x + i);
-			canShoot.add("" + i + y);
+	private void initGoldRooms() {
+		String room;
+		for (int i = 0; i < nbrGold; i++) {
+			do {
+				room = getRandomRoom();
+			} while (pits.contains(room));
+			goldRooms.add(room);
 		}
 	}
 
-	/* Initiates the rooms with stench and breeze, can probably be removed. */
-	private void initWarnings() {
-		for (String adjLoc : allAdjacent.get(wumpusRoom)) {
-			stenchRooms.add(adjLoc);
+	private void initWumpusRooms() {
+		String room;
+		for (int i = 0; i < nbrWumpus; i++) {
+			do {
+				room = getRandomRoom();
+			} while (pits.contains(room));
+			wumpusRooms.add(room);
 		}
+	}
 
-		for (String pit : pits) {
-			for (String adjLoc : allAdjacent.get(pit)) {
-				breezeRooms.add(adjLoc);
+	/* Initiates the rooms from which it is possible to shoot the Wumpus. */
+	private void initCanShootRooms() {
+		for (String w : wumpusRooms) {
+			int x = getDigit(w, 0);
+			int y = getDigit(w, 1);
+			TreeSet<String> set = new TreeSet<String>();
+			for (int i = 1; i <= size; i++) {
+				set.add("" + x + i);
+				set.add("" + i + y);
 			}
+			canShoot.put(w, set);
 		}
 	}
 
@@ -209,19 +224,9 @@ public class WumpusWorld {
 			}
 		}
 		world[0][0] = "A";
-
 		addToWorldString(world, pits, "P");
-		addToWorldString(world, stenchRooms, "S");
-		addToWorldString(world, breezeRooms, "B");
-		addToWorldString(world, canShoot, "C");
-
-		int x = getDigit(wumpusRoom, 0);
-		int y = getDigit(wumpusRoom, 1);
-		world[x - 1][y - 1] += "W";
-
-		x = getDigit(goldRoom, 0);
-		y = getDigit(goldRoom, 1);
-		world[x - 1][y - 1] += "G";
+		addToWorldString(world, goldRooms, "G");
+		addToWorldString(world, wumpusRooms, "W");
 
 		int cellSize = 7;
 		int diff;
@@ -257,5 +262,22 @@ public class WumpusWorld {
 	/* Helper method */
 	private static int getDigit(String s, int digit) {
 		return Character.getNumericValue(s.charAt(digit));
+	}
+
+	public String getGoldGoalString() {
+
+		return "has g1";
+	}
+
+	/* under construction typ */
+	public void pushToStack(Stack<String> stack, int lvlsLeft) {
+		if (lvlsLeft == 2) {
+			stack.push("(and (has g) (has g))");
+		} else {
+			stack.push(")) ");
+			pushToStack(stack, lvlsLeft / 2);
+			pushToStack(stack, lvlsLeft / 2);
+			stack.push("and (");
+		}
 	}
 }

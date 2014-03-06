@@ -1,11 +1,11 @@
-
 public class Main {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Generator generator = new Generator(4);
+		int size = 4, nbrGold = 1, nbrWumpus = 1;
+		Generator generator = new Generator(size,nbrGold,nbrWumpus);
 		generator.print();
 
 	}
