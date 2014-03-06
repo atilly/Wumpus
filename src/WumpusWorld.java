@@ -275,7 +275,7 @@ public class WumpusWorld {
 		int i;
 		for (i = 2; i < nbrGold - 1; i += 2) {
 			result.insert(0, "and (");
-			result.append(") ((has g" + goldIndex + ") (has g"
+			result.append(") (and (has g" + goldIndex + ") (has g"
 					+ (goldIndex + 1) + "))");
 			goldIndex += 2;
 		}

@@ -1,5 +1,5 @@
 (define (domain wumpusworld)
-(:requirements :adl :typing :strips :conditional-effects)
+(:requirements :typing)
 
 (:types 
 	player arrow room gold - object
@@ -9,7 +9,6 @@
 	(has ?x)
 	(adjacent ?x ?y)
 	(at ?x ?y)
-	(isAlive)
 	(canShoot ?r1 ?r2)
 	(wumpusAt ?r - room)
 	(pit ?r - room)
@@ -19,7 +18,7 @@
 	:parameters (?p - player, ?from - room, ?to - room)
 	:precondition (and 
 						(and 
-							(and (isAlive) (at ?p ?from)) 
+							(at ?p ?from) 
 							(and (adjacent ?from ?to) (not (wumpusAt ?to)))
 						)
 						(not (pit ?to)
@@ -31,7 +30,7 @@
 (:action shoot
 	:parameters (?p - player, ?a - arrow, ?from - room, ?to - room)
 	:precondition (and 
-					(and (isAlive) (canShoot ?from ?to)) 
+					(canShoot ?from ?to) 
 					(and (has ?a) (at ?p ?from))
 				)
 	:effect (and 
@@ -51,5 +50,4 @@
 				(has ?g)
 			)
 )
-
 )

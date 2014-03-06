@@ -53,7 +53,6 @@ public class Generator {
 	private static void appendInit(StringBuilder sb, WumpusWorld ww) {
 		sb.append("(:init\n");
 		sb.append("(at p1 r11)\n");
-		sb.append("(isAlive)\n");
 		sb.append("(has a1)\n");
 		sb.append(ww.getWumpusString());
 		sb.append(ww.getGoldString());
@@ -66,12 +65,9 @@ public class Generator {
 	private static void appendGoal(StringBuilder sb, WumpusWorld ww) {
 		sb.append("(:goal\n");
 		sb.append(whiteSpace + "(and\n");
-		sb.append(whiteSpace + whiteSpace + "(and\n");
-		sb.append(whiteSpace + whiteSpace + whiteSpace + "(at p1 r11)\n");
-		sb.append(whiteSpace + whiteSpace + whiteSpace + "("
+		sb.append(whiteSpace + whiteSpace +"(at p1 r11)\n");
+		sb.append(whiteSpace + whiteSpace +"("
 				+ ww.getGoldGoalString() + ")\n");
-		sb.append(whiteSpace + whiteSpace + ")\n");
-		sb.append(whiteSpace + whiteSpace + "(isAlive)\n");
 		sb.append(whiteSpace + ")\n");
 	}
 }
