@@ -4,10 +4,10 @@ import java.util.Stack;
 import java.util.TreeSet;
 
 public class WumpusWorld {
-	HashMap<String, TreeSet<String>> allAdjacent;
-	TreeSet<String> pits, goldRooms, wumpusRooms;
-	HashMap<String, TreeSet<String>> canShoot;
-	int size, nbrGold, nbrWumpus;
+	private HashMap<String, TreeSet<String>> allAdjacent;
+	private TreeSet<String> pits, goldRooms, wumpusRooms;
+	private HashMap<String, TreeSet<String>> canShoot;
+	private int size, nbrGold, nbrWumpus, goldIndex = 1;
 
 	public WumpusWorld(int size, int nbrGold, int nbrWumpus) {
 		this.size = size;
@@ -264,9 +264,26 @@ public class WumpusWorld {
 		return Character.getNumericValue(s.charAt(digit));
 	}
 
+	/* Black magic */
 	public String getGoldGoalString() {
-
-		return "has g1";
+		if (nbrGold == 1) {
+			return "has g1";
+		}
+		StringBuilder result = new StringBuilder("and (has g" + goldIndex
+				+ ") (has g" + (goldIndex + 1) + ")");
+		goldIndex += 2;
+		int i;
+		for (i = 2; i < nbrGold - 1; i += 2) {
+			result.insert(0, "and (");
+			result.append(") ((has g" + goldIndex + ") (has g"
+					+ (goldIndex + 1) + "))");
+			goldIndex += 2;
+		}
+		if (i == nbrGold - 1) {
+			result.insert(0, "and (");
+			result.append(") (has g" + (goldIndex) + ")");
+		}
+		return result.toString();
 	}
 
 	/* under construction typ */
