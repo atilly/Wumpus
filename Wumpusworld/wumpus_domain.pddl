@@ -1,5 +1,5 @@
 (define (domain wumpusworld)
-(:requirements :typing)
+(:requirements :typing :adl)
 
 (:types 
 	player arrow room gold - object
@@ -14,25 +14,28 @@
 	(pitAt ?r - room)
 	(breezeAt ?r - room)
 	(stenchAt ?r - room)
+	(isAlive)
 )
 
 (:action move
 	:parameters (?p - player, ?from - room, ?to - room)
 	:precondition (and 
-						(and 
-							(at ?p ?from) 
-							(and (adjacent ?from ?to) (not (wumpusAt ?to)))
-						)
-						(not (pitAt ?to)
-						)
-				)
-	:effect (and (at ?p ?to) (not (at ?p ?from)))
+		(and (isAlive) (at ?from ?p)) (adjacent ?from ?to))
+	:effect (
+		(when (wumpusAt ?to) 
+		(not isAlive))
+
+		(when (pitAt ?to) 
+		(not isAlive))
+
+		(and (at ?p ?to) (not (at ?p ?from)))
+		)
 )
 
 (:action shoot
 	:parameters (?p - player, ?a - arrow, ?from - room, ?to - room)
 	:precondition (and 
-					(canShoot ?from ?to) 
+					(and (canShoot ?from ?to) (isAlive)) 
 					(and (has ?a) (at ?p ?from))
 				)
 	:effect (and 
@@ -44,7 +47,7 @@
 (:action pickup
 	:parameters (?r - room ?p - player ?g - gold)
 	:precondition (and 
-					(at ?g ?r) 
+					(and (at ?g ?r) (isAlive)) 
 					(at ?p ?r)
 				)
 	:effect (and 

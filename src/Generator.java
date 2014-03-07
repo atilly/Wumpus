@@ -66,7 +66,7 @@ public class Generator {
 	private static void appendGoal(StringBuilder sb, WumpusWorld ww) {
 		sb.append("(:goal\n");
 		sb.append(whiteSpace + "(and\n");
-		sb.append(whiteSpace + whiteSpace + "(at p1 r11)\n");
+		sb.append(whiteSpace + whiteSpace + "(and (at p1 r11) isAlive)\n");
 		sb.append(whiteSpace + whiteSpace + "(" + ww.getGoldGoalString()
 				+ ")\n");
 		sb.append(whiteSpace + ")\n");

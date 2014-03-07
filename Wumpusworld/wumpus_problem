@@ -3,25 +3,23 @@
 (:objects a1 - arrow
 		  r11 r12 r13 r14 r21 r22 r23 r24 r31 r32 r33 r34 r41 r42 r43 r44  - room
 		  p1 - player
-		  g1 g2 g3 g4 - gold
+		  g1 - gold
 )
 
 (:init
 (at p1 r11)
 (has a1)
-(wumpusAt r43)
-(at g1 r12)
-(at g2 r14)
-(at g3 r44)
+(wumpusAt r41)
+(at g1 r14)
 (pitAt r21)
-(pitAt r33)
-(canShoot r13 r43)
-(canShoot r23 r43)
-(canShoot r33 r43)
-(canShoot r41 r43)
-(canShoot r42 r43)
-(canShoot r43 r43)
-(canShoot r44 r43)
+(pitAt r31)
+(canShoot r11 r41)
+(canShoot r21 r41)
+(canShoot r31 r41)
+(canShoot r41 r41)
+(canShoot r42 r41)
+(canShoot r43 r41)
+(canShoot r44 r41)
 (adjacent r11 r12)
 (adjacent r11 r21)
 (adjacent r12 r11)
@@ -71,21 +69,19 @@
 (adjacent r44 r34)
 (adjacent r44 r43)
 (breezeAt r11)
+(breezeAt r21)
 (breezeAt r22)
-(breezeAt r23)
 (breezeAt r31)
 (breezeAt r32)
-(breezeAt r34)
-(breezeAt r43)
-(stenchAt r33)
+(breezeAt r41)
+(stenchAt r31)
 (stenchAt r42)
-(stenchAt r44)
 )
 
 (:goal
 		  (and
-		  		  (at p1 r11)
-		  		  (and (and (has g1) (has g2)) (and (has g3) (has g4)))
+		  		  (and (at p1 r11) isAlive)
+		  		  (has g1)
 		  )
 )
 )
