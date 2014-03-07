@@ -43,8 +43,7 @@ public class Generator {
 
 	private static void appendObjects(StringBuilder sb, WumpusWorld ww) {
 		sb.append("(:objects a1 - arrow\n");
-		sb.append(whiteSpace + ww.getRoomsString());
-		sb.append(" - room\n");
+		sb.append(whiteSpace + ww.getRoomsString() + " - room\n");
 		sb.append(whiteSpace + "p1 - player\n");
 		sb.append(whiteSpace + ww.getGoldListString());
 		sb.append(")\n");
@@ -59,15 +58,17 @@ public class Generator {
 		sb.append(ww.getPitString());
 		sb.append(ww.getCanShootString());
 		sb.append(ww.getAdjacencyString());
+		sb.append(ww.getBreezeString());
+		sb.append(ww.getStenchString());
 		sb.append(")\n");
 	}
 
 	private static void appendGoal(StringBuilder sb, WumpusWorld ww) {
 		sb.append("(:goal\n");
 		sb.append(whiteSpace + "(and\n");
-		sb.append(whiteSpace + whiteSpace +"(at p1 r11)\n");
-		sb.append(whiteSpace + whiteSpace +"("
-				+ ww.getGoldGoalString() + ")\n");
+		sb.append(whiteSpace + whiteSpace + "(at p1 r11)\n");
+		sb.append(whiteSpace + whiteSpace + "(" + ww.getGoldGoalString()
+				+ ")\n");
 		sb.append(whiteSpace + ")\n");
 	}
 }

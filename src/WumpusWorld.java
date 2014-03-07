@@ -5,7 +5,8 @@ import java.util.TreeSet;
 
 public class WumpusWorld {
 	private HashMap<String, TreeSet<String>> allAdjacent;
-	private TreeSet<String> pits, goldRooms, wumpusRooms;
+	private TreeSet<String> pits, goldRooms, wumpusRooms, stenchRooms,
+			breezeRooms;
 	private HashMap<String, TreeSet<String>> canShoot;
 	private int size, nbrGold, nbrWumpus, goldIndex = 1;
 
@@ -18,18 +19,21 @@ public class WumpusWorld {
 		canShoot = new HashMap<String, TreeSet<String>>();
 		goldRooms = new TreeSet<String>();
 		wumpusRooms = new TreeSet<String>();
-
+		breezeRooms = new TreeSet<String>();
+		stenchRooms = new TreeSet<String>();
+		
 		initWorld();
 		initWumpusRooms();
 		initGoldRooms();
 		initCanShootRooms();
+		initWarnings();
 	}
 
 	/* The 'pit rxx' String */
 	public String getPitString() {
 		String result = "";
 		for (String p : pits) {
-			result += "(pit" + " r" + p + ")\n";
+			result += "(pitAt" + " r" + p + ")\n";
 		}
 		return result;
 	}
@@ -64,7 +68,23 @@ public class WumpusWorld {
 			}
 		}
 		return result;
+	}
 
+	public String getStenchString() {
+		String result = "";
+		for (String p : stenchRooms) {
+			result += "(stenchAt r" + p + ")\n";
+		}
+		return result;
+	}
+
+	/* The rooms with breezes, can probably be removed. */
+	public String getBreezeString() {
+		String result = "";
+		for (String p : breezeRooms) {
+			result += "(breezeAt r" + p + ")\n";
+		}
+		return result;
 	}
 
 	/* All the adjacency relations */
@@ -72,7 +92,6 @@ public class WumpusWorld {
 		TreeSet<String> sortedKeys = new TreeSet<String>(allAdjacent.keySet());
 		String result = "";
 		for (String s : sortedKeys) {
-
 			Set<String> adjs = allAdjacent.get(s);
 			for (String sq : adjs) {
 				result += "(adjacent r" + s + " r" + sq + ")\n";
@@ -110,6 +129,20 @@ public class WumpusWorld {
 				System.out.print(world[j][i]);
 			}
 			System.out.println();
+		}
+	}
+
+	/* Initiates the rooms with stench and breeze, can probably be removed. */
+	private void initWarnings() {
+		for (String wumpusRoom : wumpusRooms) {
+			for (String adjLoc : allAdjacent.get(wumpusRoom)) {
+				stenchRooms.add(adjLoc);
+			}
+		}
+		for (String pit : pits) {
+			for (String adjLoc : allAdjacent.get(pit)) {
+				breezeRooms.add(adjLoc);
+			}
 		}
 	}
 
@@ -227,6 +260,8 @@ public class WumpusWorld {
 		addToWorldString(world, pits, "P");
 		addToWorldString(world, goldRooms, "G");
 		addToWorldString(world, wumpusRooms, "W");
+		addToWorldString(world, breezeRooms, "B");
+		addToWorldString(world, stenchRooms, "S");
 
 		int cellSize = 7;
 		int diff;

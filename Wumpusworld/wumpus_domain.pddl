@@ -11,7 +11,9 @@
 	(at ?x ?y)
 	(canShoot ?r1 ?r2)
 	(wumpusAt ?r - room)
-	(pit ?r - room)
+	(pitAt ?r - room)
+	(breezeAt ?r - room)
+	(stenchAt ?r - room)
 )
 
 (:action move
@@ -21,7 +23,7 @@
 							(at ?p ?from) 
 							(and (adjacent ?from ?to) (not (wumpusAt ?to)))
 						)
-						(not (pit ?to)
+						(not (pitAt ?to)
 						)
 				)
 	:effect (and (at ?p ?to) (not (at ?p ?from)))
