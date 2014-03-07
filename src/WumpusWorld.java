@@ -320,16 +320,4 @@ public class WumpusWorld {
 		}
 		return result.toString();
 	}
-
-	/* under construction typ */
-	public void pushToStack(Stack<String> stack, int lvlsLeft) {
-		if (lvlsLeft == 2) {
-			stack.push("(and (has g) (has g))");
-		} else {
-			stack.push(")) ");
-			pushToStack(stack, lvlsLeft / 2);
-			pushToStack(stack, lvlsLeft / 2);
-			stack.push("and (");
-		}
-	}
 }

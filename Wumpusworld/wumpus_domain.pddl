@@ -14,33 +14,60 @@
 	(pitAt ?r - room)
 	(breezeAt ?r - room)
 	(stenchAt ?r - room)
+	(sensedBreeze ?r)
+	(sensedStench ?r)
 	(isAlive)
 )
 
 (:action move
-	:parameters (?p - player, ?from - room, ?to - room)
-	:precondition (and 
-		(and (isAlive) (at ?from ?p)) (adjacent ?from ?to))
-	:effect (
-		(when (wumpusAt ?to) 
-		(not isAlive))
+	:parameters (?p - player ?from - room ?to - room)
+	:precondition (
+					and
+						(
+							and 
+								(and (isAlive) (at ?p ?from)) 
+								(adjacent ?from ?to)
+						)	
+						(
+							forall (?r - room)
+                     			(
+                     				and (
+                     						imply (and (adjacent ?r ?to) (sensedStench ?r)) (wumpusAt ?to)
+                     					)
+                     					(
+                     						imply (and (adjacent ?r ?to) (sensedBreeze ?r)) (pitAt ?to)
+                     					)
+                     			)
+						)
+)
 
-		(when (pitAt ?to) 
-		(not isAlive))
-
-		(and (at ?p ?to) (not (at ?p ?from)))
-		)
+	:effect (and
+				(
+					and (at ?p ?to) (not (at ?p ?from))
+				)
+				(
+					when (or (wumpusAt ?to) (pitAt ?to)) (not (isAlive))
+				)
+			)
 )
 
 (:action shoot
 	:parameters (?p - player, ?a - arrow, ?from - room, ?to - room)
 	:precondition (and 
-					(and (canShoot ?from ?to) (isAlive)) 
+					(and (canShoot ?from ?to) (isAlive))
 					(and (has ?a) (at ?p ?from))
 				)
 	:effect (and 
-				(not (has ?a)) 
-				(not (wumpusAt ?to))
+				(and 
+					(not (has ?a)) 
+					(not (wumpusAt ?to))
+				)
+				(
+					forall (?r - room)
+					(
+						when (adjacent ?r ?to) (and (not (stenchAt ?to)) (not (sensedStench ?to)))
+					)
+				)
 			)
 )
 
@@ -55,4 +82,19 @@
 				(has ?g)
 			)
 )
+
+(:action sense
+	:parameters (?r - room ?p - player )
+	:precondition (and (at ?p ?r) (isAlive))
+	:effect (
+			and
+				(
+					when (stenchAt ?r) (sensedStench ?r)
+				)
+				(
+					when (breezeAt ?r) (sensedBreeze ?r)
+				)
+		)
+)
+
 )
